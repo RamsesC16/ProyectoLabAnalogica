@@ -1,0 +1,593 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% bare_jrnl.tex
+% V1.4b
+% 2015/08/26
+% by Michael Shell
+% see http://www.michaelshell.org/
+% for current contact information.                                                                 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% This is a skeleton file demonstrating the use of IEEEtran.cls
+%% (requires IEEEtran.cls version 1.8b or later) with an IEEE
+%% journal paper.
+%%
+%% Support sites:
+%% http://www.michaelshell.org/tex/ieeetran/
+%% http://www.ctan.org/pkg/ieeetran
+%% and
+%% http://www.ieee.org/
+
+
+\documentclass[journal]{IEEEtran}
+%
+\usepackage{instructivo}  % Commands for multiple choice
+\graphicspath{{./}{./fig/}}
+\usepackage{float}
+\usepackage[natbib=true,style=trad-unsrt,backend=biber]{biblatex}
+\usepackage[table,xcdraw]{xcolor}
+
+
+\addbibresource{literatura.bib}
+
+% correct bad hyphenation here
+\hyphenation{op-tical net-works semi-conduc-tor}
+
+
+\begin{document}
+%
+% paper title
+% Titles are generally capitalized except for words such as a, an, and, as,
+% at, but, by, for, in, nor, of, on, or, the, to and up, which are usually
+% not capitalized unless they are the first or last word of the title.
+% Linebreaks \\ can be used within to get better formatting as desired.
+% Do not put math or special symbols in the title.
+\title{Experimento 08: Respuesta en frecuencia de un amplificador}
+
+
+\author{Julio~David~Quesada-Hernández
+        y~Ramsés~Cortes-Torres
+}
+
+
+% The paper headers
+\markboth{EL3215 Laboratorio de Electrónica Analógica, IS2023}%
+{EL3215 Laboratorio de Electrónica Analógica}
+
+
+% make the title area
+\maketitle
+
+
+\begin{abstract}
+En este experimento se estudió el comportamiento de un amplificador con configuración en emisor común, tanto en condiciones de baja como de alta frecuencia. Se realizaron cálculos teóricos, simulaciones y mediciones experimentales con el objetivo de analizar los parámetros de polarización en corriente directa (CD), el comportamiento en corriente alterna (CA) y la respuesta en frecuencia del circuito. En la primera parte se determinó la ganancia de voltaje y la correcta polarización del transistor, verificando la correspondencia entre los valores teóricos, simulados y medidos. Posteriormente, se implementó un circuito equivalente en alta frecuencia mediante la inclusión de capacitores que representan las capacitancias internas del transistor, con el fin de observar los efectos de estas sobre la ganancia y la frecuencia de corte superior. Los resultados obtenidos mostraron una buena concordancia entre los cálculos teóricos, las simulaciones y los valores experimentales, validando las técnicas de análisis empleadas y demostrando el efecto de las capacitancias en la reducción de la respuesta del amplificador a frecuencias elevadas.
+ 
+\end{abstract}
+
+% Se sugiere no más de cuatro palabras o frases cortas en orden alfabético, separadas por comas, que representen su reporte
+\begin{IEEEkeywords}
+Emisor común, transistor BJT, amplificador, respuesta en frecuencia.
+\end{IEEEkeywords}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Introducción}
+
+\IEEEPARstart{E}{n} el campo de la ingeniería electrónica, el análisis de la respuesta en frecuencia de un amplificador permite describir cómo varía su ganancia en función de la frecuencia de la señal de entrada. En los amplificadores con transistores bipolares (BJT), este comportamiento está determinado principalmente por los capacitores de acople, los capacitores de bypass y las capacitancias internas del dispositivo. A bajas frecuencias, la reactancia de los capacitores incrementa, limitando el paso de la señal y reduciendo la ganancia; mientras que a altas frecuencias, el efecto Miller y las capacitancias internas del transistor provocan una disminución adicional de la respuesta.
+
+El estudio de la respuesta en frecuencia permite determinar las frecuencias críticas de corte inferior y superior, las cuales definen el rango de operación eficaz del amplificador. En este experimento se analiza un amplificador BJT de una sola etapa con el fin de caracterizar su comportamiento tanto en bajas como en altas frecuencias, empleando modelos equivalentes RC simplificados y verificando los resultados mediante mediciones experimentales.
+
+El objetivo general del trabajo es analizar la respuesta en frecuencia de un amplificador en emisor común, determinando sus frecuencias de corte inferior y superior mediante cálculo y medición. Con ello se busca comprender la influencia de los elementos capacitivos y de las características internas del transistor sobre el desempeño del circuito, aspecto fundamental en el diseño de amplificadores electrónicos \cite{Floyd2008}.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Respuesta del amplificador en baja frecuencia}
+La respuesta en baja frecuencia de un amplificador BJT de una sola etapa está gobernada por los capacitores de acople y de bypass, los cuales determinan el comportamiento del circuito cuando la frecuencia de la señal de entrada disminuye. Estos capacitores permiten el paso de la señal de corriente alterna (CA) mientras bloquean los niveles de corriente directa (CD), asegurando la adecuada polarización del transistor y el acoplamiento entre etapas.
+
+A medida que la frecuencia de entrada se reduce, la reactancia capacitiva 
+
+\begin{equation}
+X_C = \frac{1}{2\pi f C}
+\end{equation}
+
+de estos elementos se incrementa, limitando la transferencia de señal y provocando una disminución de la ganancia. Este fenómeno produce una atenuación progresiva del nivel de salida conforme la señal se aproxima al límite inferior de la banda de paso.
+
+Cada capacitor, ya sea el de entrada, de emisor o de salida, introduce una frecuencia crítica de corte inferior distinta. La respuesta global del amplificador en bajas frecuencias está dominada por aquel capacitor cuya frecuencia de corte sea mayor, ya que este determina el punto donde la ganancia comienza a decrecer. La suma de los efectos de los capacitores define la frecuencia crítica mínima inferior \( f_{cl} \), la cual establece el inicio de la región de atenuación.
+
+Comprender este comportamiento es esencial para el diseño y ajuste de amplificadores, puesto que el valor de los capacitores de acople debe seleccionarse de modo que el circuito mantenga una ganancia constante en el rango de frecuencias de interés. La adecuada elección de estos componentes es crucial para evitar distorsiones por pérdida de señal en bajas frecuencias y preservar la fidelidad del sistema \cite{Floyd2008}. El análisis de las respuestas individuales de cada capacitor permite modelar el circuito mediante equivalentes RC que simplifican la predicción de la respuesta total \cite{Boylestad}.
+ 
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=3.2in]{Circuito1}
+\caption{Amplificador Emisor Común: Rutas de carga y descarga}
+\label{Circuito1}
+\end{figure}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Circuito de Medición Emisor Común}
+En este experimento se realizó el montaje de un circuito con configuración Emisor Común que permite realizar el análisis en baja frecuencia de manera sencilla aplicando técnicas de análisis de circuitos aprendidas para elementos activos.
+
+Se realizaron los cálculos teóricos de los parámetros en CD y CA del circuito de la Fig. \ref{fig:Circuito2} aplicando técnicas sencillas de análisis de circuitos como la superposición de fuentes, ley de ohm, y para los parámetros en CA se hizo uso de las expresiones matemáticas establecidas en el instructivo del experimento.
+
+Estos resultados se exponen en la Tabla \ref{Tabla2}.
+
+\begin{table}[H]
+        \centering
+        \caption{Valores de resistencia utilizados}
+        \begin{tabular}{|>{\centering\arraybackslash}m{2cm}|>{\centering\arraybackslash}m{2cm}|
+>{\centering\arraybackslash}m{2cm}|}
+             \hline
+             Componente & Valor requerido & Valor medido\\ 
+             \hline
+             $R_A$ & $1$ $k\Omega$ & $995,776$ $\Omega$\\ 
+             \hline
+             $R_B$ & $47$ $\Omega$ & $47,349$ $\Omega$\\ 
+             \hline
+             $R_1$ & $68$ $k\Omega$ & $62,408$ $k\Omega$\\ 
+             \hline
+             $R_2$ & $10$ $k\Omega$ & $9,722$ $k\Omega$\\ 
+             \hline
+             $R_{E1}$ & $10$ $\Omega$ & $10,227$ $\Omega$\\ 
+             \hline
+             $R_{E2}$ & $560$ $\Omega$ & $546,043$ $\Omega$\\ 
+             \hline
+             $R_C$ & $3,9$ $k\Omega$ & $3,797$ $k\Omega$\\ 
+             \hline
+             $R_L$ & $10$ $k\Omega$ & $10,036$ $k\Omega$\\ 
+             \hline
+            \end{tabular}
+    	\label{Tabla1}   
+	\end{table}
+
+
+\begin{table}[H]
+        \centering
+        \caption{Amplificador en emisor común: Parámetros CD y CA}
+        \begin{tabular}{|>{\centering\arraybackslash}m{2cm}|>{\centering\arraybackslash}m{2cm}|}
+             \hline
+             Parámetro & Calculado\\ 
+             \hline
+             $V_B$ & $1,81$ $V$\\ 
+             \hline
+             $V_E$ & $1,13$ $V$\\ 
+             \hline
+             $I_E$ & $1,98$ $mA$\\ 
+             \hline
+             $V_C$ & $7,32$ $V$\\ 
+             \hline
+             $V_{CE}$ & $6,19$ $V$\\
+             \hline
+             $r_e$ & $12,623 \ \Omega$ \\
+             \hline
+             $A_v$ & $93,83$ \\
+             \hline
+             $V_{out}$ & $1,87$ $V_{pp}$\\
+             \hline
+            \end{tabular}
+    	\label{Tabla2}   
+	\end{table}
+
+\begin{table}[H]
+        \centering
+        \caption{Amplificador en emisor común: Resistencias equivalentes para cada capacitor de acople}
+        \begin{tabular}{|>{\centering\arraybackslash}m{2cm}|>{\centering\arraybackslash}m{2cm}|}
+             \hline
+             Capacitor & \( R_{eq} \)\\ 
+             \hline
+             $C_1$ & $3,02$ $k\Omega$\\ 
+             \hline
+             $C_2$ & $21,951$ $k\Omega$\\ 
+             \hline
+             $C_3$ & $13,9$ $k\Omega$\\ 
+             \hline
+            \end{tabular}
+    	\label{Tabla3}   
+	\end{table}
+	
+\begin{table}[H]
+        \centering
+        \caption{Amplificador en emisor común: Frecuencias críticas de corte inferior}
+        \begin{tabular}{|>{\centering\arraybackslash}m{2cm}|>{\centering\arraybackslash}m{2cm}|}
+             \hline
+             Capacitor & \( f_{crítica} \)\\ 
+             \hline
+             $C_1$ & $53,638$ $Hz$\\ 
+             \hline
+             $C_2$ & $72,505$ $Hz$\\ 
+             \hline
+             $C_3$ & $52,045,9$ $Hz$\\ 
+             \hline
+             $General$ & $177,188$ $Hz$\\ 
+             \hline
+            \end{tabular}
+    	\label{Tabla4}   
+	\end{table}
+	
+\begin{table}[H]
+        \centering
+        \caption{Amplificador en emisor común: Ajuste de frecuencia crítica inferior}
+        \begin{tabular}{|>{\centering\arraybackslash}m{2cm}|>{\centering\arraybackslash}m{2cm}|}
+             \hline
+             \(C_{2calculado}\) & \(f_{crítica}\)\\ 
+             \hline
+             $37,123$ $\mu\text{F}$ & $195,317$ $Hz$\\ 
+             \hline
+            \end{tabular}
+    	\label{Tabla5}   
+	\end{table}
+
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=3.2in]{Circuito2}
+\caption{Amplificador Emisor Común}
+\label{fig:Circuito2}
+\end{figure}	
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Simulaciones}
+
+Antes de realizar las mediciones experimentales en el laboratorio, se efectuaron simulaciones del circuito amplificador en configuración de emisor común, utilizando los valores nominales de los componentes indicados en el procedimiento. El propósito de estas simulaciones fue observar de forma preliminar la respuesta en baja frecuencia del amplificador y estimar los puntos de operación de corriente y voltaje, así como las variaciones en la ganancia de voltaje para diferentes frecuencias de entrada.
+
+A partir de los resultados obtenidos, se registraron los valores simulados correspondientes a los parámetros del transistor, tales como $V_B$, $V_E$, $V_C$, $V_{CE}$ e $I_E$, además de las frecuencias de corte asociadas a los capacitores de acople $C_1$, $C_2$ y $C_3$. Estos datos fueron empleados como referencia para comparar posteriormente con los valores simulados y mediciones experimentales.
+
+\begin{table}[H]
+        \centering
+        \caption{Simulación de parámetros CD y CA del Emisor Común}
+        \begin{tabular}{|>{\centering\arraybackslash}m{2cm}|>{\centering\arraybackslash}m{2cm}|
+>{\centering\arraybackslash}m{2cm}|}
+             \hline
+             Parámetro & Calculado & Simulado\\ 
+             \hline
+             $V_B$ & $1,81$ $V$ & $1,811$ $V$\\ 
+             \hline
+             $V_E$ & $1,13$ $V$ & $1,129$ $V$\\ 
+             \hline
+             $I_E$ & $1,98$ $mA$ & \cellcolor{gray!90} $ $\\ 
+             \hline
+             $V_C$ & $7,32$ $V$ & $7,323$ $V$\\ 
+             \hline
+             $V_{CE}$ & $6,19$ $V$ & $6,194$ $V$\\
+             \hline
+             $r_e$ & $12,623 \ \Omega$ & \cellcolor{gray!90} $ $\\
+             \hline
+             $A_v$ & $93,83$ & $110,888$\\
+             \hline
+             $V_{out}$ & $1,87$ $V_{pp}$ & $2,24$ $V_{pp}$\\
+             \hline
+            \end{tabular}
+    	\label{Tabla6}   
+	\end{table}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Resultados Experimentales}
+Una vez construido el circuito amplificador en configuración de emisor común, se procedió a realizar las mediciones correspondientes de los parámetros de polarización y de la respuesta en frecuencia. Las mediciones de voltaje en base, emisor y colector ($V_B$, $V_E$, $V_C$), así como la corriente de emisor ($I_E$), permitieron verificar el punto de operación del transistor y compararlo con los valores previamente obtenidos en la simulación. De esta forma se comprobó que el transistor operó dentro de la región activa, garantizando un comportamiento lineal del amplificador.
+
+Posteriormente, se determinaron las resistencias equivalentes vistas por cada capacitor de acople ($C_1$, $C_2$ y $C_3$), siguiendo las expresiones indicadas en el procedimiento experimental. Con base en estos valores, se calcularon las frecuencias críticas teóricas y se compararon con las frecuencias medidas mediante el osciloscopio, observando la reducción de la amplitud de la señal de salida al 70.7\% de su valor en banda media.
+
+Durante el proceso de medición, se aisló cada capacitor utilizando capacitores de $1000~\mu$F, con el fin de que su efecto predominara en la respuesta del circuito. De esta forma, se obtuvo la frecuencia crítica individual de cada capacitor y posteriormente la frecuencia crítica general del amplificador. Finalmente, se ajustó el valor del capacitor de acople $C_2$ para modificar la frecuencia de corte inferior del sistema a aproximadamente $300~\text{Hz}$, verificando experimentalmente el cambio esperado en la respuesta en frecuencia.
+
+\begin{table}[H]
+        \centering
+        \caption{Medición de parámetros CD y CA del Emisor Común}
+        \begin{tabular}{|>{\centering\arraybackslash}m{2cm}|>{\centering\arraybackslash}m{2cm}|
+>{\centering\arraybackslash}m{2cm}|}
+             \hline
+             Parámetro & Calculado & Medido\\ 
+             \hline
+             $V_B$ & $1,81$ $V$ & $1,87636$ $V$\\ 
+             \hline
+             $V_E$ & $1,13$ $V$ & $1,21279$ $V$\\ 
+             \hline
+             $I_E$ & $1,98$ $mA$ & \cellcolor{gray!90} $ $\\ 
+             \hline
+             $V_C$ & $7,32$ $V$ & $6,77665$ $V$\\ 
+             \hline
+             $V_{CE}$ & $6,19$ $V$ & $5,55065$ $V$\\
+             \hline
+             $r_e$ & $12,623 \ \Omega$ & \cellcolor{gray!90} $ $\\
+             \hline
+             $A_v$ & $93,83$ & $91,4286$\\
+             \hline
+             $V_{out}$ & $1,87$ $V_{pp}$ & $2,224$ $V_{pp}$\\
+             \hline
+            \end{tabular}
+    	\label{Tabla7}   
+	\end{table}
+	
+\begin{table}[H]
+        \centering
+        \caption{Amplificador en emisor común: Frecuencias críticas de corte inferior}
+        \begin{tabular}{|>{\centering\arraybackslash}m{2cm}|>{\centering\arraybackslash}m{2cm}|
+>{\centering\arraybackslash}m{2.3cm}|}
+             \hline
+             Capacitor & \(f_{crítica medida}\) & \(f_{crítica calculada}\)\\ 
+             \hline
+             $C_1$ & $53,638$ $Hz$ & $57$ $Hz$\\ 
+             \hline
+             $C_2$ & $72,505$ $Hz$ & $111$ $Hz$\\ 
+             \hline
+             $C_3$ & $52,045,9$ $Hz$ & $86$ $Hz$\\ 
+             \hline
+             $General$ & $177,188$ $Hz$ & $137,144$ $Hz$\\ 
+             \hline
+            \end{tabular}
+    	\label{Tabla8}   
+	\end{table}
+	
+\begin{table}[H]
+        \centering
+        \caption{Amplificador en emisor común: Ajuste de frecuencia crítica inferior}
+        \begin{tabular}{|>{\centering\arraybackslash}m{2cm}|>{\centering\arraybackslash}m{2cm}|
+>{\centering\arraybackslash}m{2cm}|}
+             \hline
+             \(C_{2calculado}\) & \(f_{crítica medida}\) & \(f_{crítica calculada}\)\\ 
+             \hline
+             $37,123$ $\mu\text{F}$ & $195,317$ $Hz$ & $246,2$ $Hz$\\ 
+             \hline
+            \end{tabular}
+    	\label{Tabla5}   
+	\end{table}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Análisis de Resultados}
+
+Al comparar los valores teóricos, simulados y medidos del circuito amplificador en configuración de emisor común, se observa una buena concordancia general, lo que confirma la correcta polarización del transistor y el funcionamiento adecuado del amplificador dentro de la región activa. Las diferencias mínimas entre los valores de $V_B$, $V_E$, $V_C$ y $V_{CE}$ pueden atribuirse a tolerancias en las resistencias, variaciones en los parámetros reales del transistor 2N3904 respecto a los valores ideales utilizados en la simulación, y posibles errores instrumentales durante las mediciones.
+
+En términos de ganancia, se aprecia que el valor experimental de $A_v = 91,43$ es ligeramente inferior al valor simulado ($A_v = 110,89$) y teórico ($A_v = 93,83$). Esta discrepancia puede explicarse por la presencia de capacitancias parásitas internas del transistor, el efecto de las sondas del osciloscopio, así como por una leve caída de tensión en las conexiones del protoboard. No obstante, la diferencia relativa es baja, indicando que el modelo teórico describe adecuadamente el comportamiento real del amplificador.
+
+Respecto a la respuesta en baja frecuencia, las frecuencias críticas medidas para los capacitores de acople $C_1$, $C_2$ y $C_3$ presentan valores próximos a los teóricos, confirmando que cada capacitor limita la transferencia de señal en un punto distinto del espectro. Se verifica que la frecuencia crítica dominante corresponde al capacitor $C_2$, ya que su valor de $f_{c2} = 72,5~\text{Hz}$ es el más alto de los tres, definiendo así el inicio de la región de atenuación del amplificador. La frecuencia crítica global medida ($f_{cl} = 177,19~\text{Hz}$) muestra un buen acuerdo con la calculada teóricamente ($f_{cl} = 137,14~\text{Hz}$), considerando las aproximaciones utilizadas en el cálculo de las resistencias equivalentes.
+
+El ajuste del capacitor $C_2$ permitió comprobar la influencia directa del valor de acople sobre la respuesta en baja frecuencia. Al modificarse su capacitancia a $37,123~\mu\text{F}$, se elevó la frecuencia de corte inferior a aproximadamente $195~\text{Hz}$, lo que concuerda con el comportamiento esperado según la relación inversa entre la frecuencia crítica y la capacidad del condensador.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Respuesta de un amplificador en alta frecuencia}
+A frecuencias elevadas, el comportamiento del amplificador está dominado por las capacitancias internas del transistor, principalmente la capacitancia base-emisor \( C_{be} \) y la capacitancia base-colector \( C_{bc} \). Estas capacitancias crean trayectorias adicionales para la señal, lo que reduce progresivamente la ganancia del amplificador conforme la frecuencia aumenta.
+
+El fenómeno más importante en este régimen es el efecto Miller, asociado a la capacitancia entre la base y el colector del transistor. En configuraciones inversoras, como el amplificador en emisor común, esta capacitancia se multiplica por un factor aproximado de \( (1 + |A_v|) \), generando una capacitancia efectiva de entrada considerablemente mayor. Este efecto reduce la frecuencia de corte superior \( f_{cu} \), limitando el ancho de banda del amplificador y su capacidad de amplificar señales de alta frecuencia \cite{Floyd2008}.
+
+El análisis del comportamiento en alta frecuencia permite determinar las limitaciones físicas del dispositivo y evaluar cómo las resistencias asociadas en las etapas de entrada y salida influyen en la respuesta del sistema. El estudio de las capacitancias parasitarias y del efecto Miller es esencial para diseñar amplificadores de banda ancha, ya que estos factores determinan el tiempo de respuesta y la estabilidad del circuito \cite{Boylestad2009}.
+
+Para este caso, este fenómeno se analiza mediante la adición de capacitores externos que simulan las capacitancias internas del transistor (\ref{fig:Circuito3}), permitiendo observar de forma clara la disminución de la ganancia con el incremento de la frecuencia. Este procedimiento facilita la comprensión del impacto que tienen las propiedades internas del transistor sobre la respuesta dinámica del amplificador.
+
+\begin{figure}[!ht]
+\centering
+\includegraphics[width=3.3in]{Circuito4}
+\caption{Modelo de análisis en alta frecuencia del amplificador en emisor común}
+\label{fig:Circuito4}
+\end{figure}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Circuito de Medición Emisor Común para Pruebas en Alta Frecuencia}
+
+Para esta parte se realizó el montaje del mismo circuito con configuración Emisor Común pero agregándole capacitores externos que simulan las capacitancias internas del transistor, el circuito permite realizar el análisis en alta frecuencia de manera sencilla aplicando técnicas de análisis de circuitos aprendidas para elementos activos.
+
+Se volvieron a realizar los cálculos teóricos de los parámetros en CD,CA y de frecuencias del circuito de la Fig. \ref{fig:Circuito3} aplicando las mismas técnicas anteriores y las expresiones matemáticas establecidas en el instructivo del experimento.
+
+Estos resultados se exponen en la Tabla \ref{Tabla5}.
+
+\begin{table}[H]
+        \centering
+        \caption{Amplificador en emisor común: Parámetros CD y CA}
+        \begin{tabular}{|>{\centering\arraybackslash}m{2cm}|>{\centering\arraybackslash}m{2cm}|}
+             \hline
+             Parámetro & Calculado\\ 
+             \hline
+             $V_B$ & $1,81$ $V$\\ 
+             \hline
+             $V_E$ & $1,13$ $V$\\ 
+             \hline
+             $I_E$ & $1,98$ $mA$\\ 
+             \hline
+             $V_C$ & $7,32$ $V$\\ 
+             \hline
+             $V_{CE}$ & $6,2$ $V$\\
+             \hline
+             $r_e$ & $12,623 \ \Omega$ \\
+             \hline
+             $A_v$ & $86,136$ \\
+             \hline
+             $V_{out}$ & $1,74$ $V_{pp}$\\
+             \hline
+            \end{tabular}
+    	\label{Tabla5}   
+	\end{table}
+
+
+\begin{table}[H]
+        \centering
+        \caption{Amplificador en emisor común: Calculos para respuesta en alta frecuencia}
+        \begin{tabular}{|>{\centering\arraybackslash}m{2cm}|>{\centering\arraybackslash}m{2cm}|}
+             \hline
+             Parámetro & Calculado\\ 
+             \hline
+             $C_{ent}$ & $8,905$\\ 
+             \hline
+             $R_{eq(ent)}$ & $44,22$\\ 
+             \hline
+             $f_{c(ent)}$ & $404,27$\\ 
+             \hline
+             $C_{sal}$ & $201,15$\\ 
+             \hline
+             $R_C$ & $2,806$\\
+             \hline
+             $f_{c(sal)}$ & $282$\\
+             \hline
+             $f_{cu}$ & $166,1$ \\
+             \hline
+            \end{tabular}
+    	\label{Tabla6}   
+	\end{table}
+
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=3.3in]{Circuito3}
+\caption{Amplificador en emisor común para pruebas en alta frecuencia}
+\label{fig:Circuito3}
+\end{figure}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Simulaciones}
+Antes de realizar las mediciones experimentales en alta frecuencia, se efectuaron simulaciones del circuito amplificador en configuración de emisor común, incorporando capacitores externos que representan las capacitancias internas del transistor. Estas simulaciones tuvieron como objetivo analizar la respuesta en alta frecuencia y estimar la frecuencia de corte superior, considerando el efecto Miller y las resistencias equivalentes vistas desde la entrada y la salida del transistor.
+
+Durante la simulación se determinaron los valores de los parámetros de polarización en corriente directa ($V_B$, $V_E$, $V_C$, $V_{CE}$ e $I_E$) y la ganancia de voltaje ($A_v$) en régimen de señal alterna, además de las capacitancias de entrada y salida ($C_{ent}$ y $C_{sal}$) y sus respectivas frecuencias críticas. 
+
+\begin{table}[H]
+        \centering
+        \caption{Simulación de parámetros CD y CA del Emisor Común para pruebas en alta frecuencia}
+        \begin{tabular}{|>{\centering\arraybackslash}m{2cm}|>{\centering\arraybackslash}m{2cm}|
+>{\centering\arraybackslash}m{2cm}|}
+             \hline
+             Parámetro & Calculado & Simulado\\ 
+             \hline
+             $V_B$ & $1,81$ $V$ & $1,811$ $V$\\ 
+             \hline
+             $V_E$ & $1,13$ $V$ & $1,13$ $V$\\ 
+             \hline
+             $I_E$ & $1,98$ $mA$ & \cellcolor{gray!90} $ $\\ 
+             \hline
+             $V_C$ & $7,32$ $V$ & $7,322$ $V$\\ 
+             \hline
+             $V_{CE}$ & $6,19$ $V$ & $6,192$ $V$\\
+             \hline
+             $r_e$ & $12,623 \ \Omega$ & \cellcolor{gray!90} $ $\\
+             \hline
+             $A_v$ & $93,83$ & $112,12$\\
+             \hline
+             $V_{out}$ & $1,87$ $V_{pp}$ & $2,22$ $V_{pp}$\\
+             \hline
+            \end{tabular}
+    	\label{Tabla6}   
+	\end{table}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Resultados Experimentales}
+Con el circuito armado en el protoboard, se realizaron las mediciones correspondientes a los parámetros de polarización en corriente directa y a la respuesta del amplificador en alta frecuencia. Se midieron los voltajes $V_B$, $V_E$, $V_C$ y $V_{CE}$, así como la amplitud de la señal de salida $V_{out}$, verificando que el transistor operara en la región activa para garantizar un funcionamiento lineal.
+
+Posteriormente, se incrementó progresivamente la frecuencia de la señal de entrada para observar la variación en la ganancia de voltaje y determinar la frecuencia de corte superior ($f_{cu}$), definida como el punto en el que la ganancia disminuye a $0{,}707$ veces su valor máximo. Los valores experimentales mostraron un comportamiento acorde con la teoría, evidenciando una reducción gradual de la ganancia conforme la frecuencia se aproxima al límite superior de la banda pasante.
+
+
+\begin{table}[H]
+        \centering
+        \caption{Medición de parámetros CD y CA del Emisor Común para pruebas en alta frecuencia}
+        \begin{tabular}{|>{\centering\arraybackslash}m{2cm}|>{\centering\arraybackslash}m{2cm}|
+>{\centering\arraybackslash}m{2cm}|}
+             \hline
+             Parámetro & Calculado & Medido\\ 
+             \hline
+             $V_B$ & $1,81$ $V$ & $1,87736$ $V$\\ 
+             \hline
+             $V_E$ & $1,13$ $V$ & $1,21554$ $V$\\ 
+             \hline
+             $I_E$ & $1,98$ $mA$ & \cellcolor{gray!90} $ $\\ 
+             \hline
+             $V_C$ & $7,32$ $V$ & $6,71264$ $V$\\ 
+             \hline
+             $V_{CE}$ & $6,19$ $V$ & $5,997$ $V$\\
+             \hline
+             $r_e$ & $12,623 \ \Omega$ & \cellcolor{gray!90} $ $\\
+             \hline
+             $A_v$ & $93,83$ & $100,5587$\\
+             \hline
+             $V_{out}$ & $1,87$ $V_{pp}$ & $2,25$ $V_{pp}$\\
+             \hline
+            \end{tabular}
+    	\label{Tabla7}   
+	\end{table}
+
+\begin{table}[H]
+        \centering
+        \caption{Medición para respuesta en alta frecuencia}
+        \begin{tabular}{|>{\centering\arraybackslash}m{2cm}|>{\centering\arraybackslash}m{2cm}|}
+             \hline
+             Parámetro & Medición\\ 
+             \hline
+             $f_{cu}$ & $135$ $Hz$\\ 
+             \hline
+            \end{tabular}
+    	\label{Tabla11}   
+	\end{table}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Análisis de Resultados}
+Al comparar los valores teóricos, simulados y medidos, se observa una buena correspondencia entre los parámetros de polarización en corriente directa, lo cual confirma que el circuito fue correctamente diseñado y montado. Las ligeras discrepancias entre los valores teóricos y experimentales de $V_B$, $V_E$ y $V_C$ pueden atribuirse a tolerancias en las resistencias, dispersión de las características del transistor 2N3904 y pequeñas pérdidas en las conexiones.
+
+En cuanto a la ganancia de voltaje, el valor medido ($A_v = 100{,}56$) se ubica entre el teórico ($A_v = 93{,}83$) y el simulado ($A_v = 112{,}12$), mostrando una coherencia aceptable. Esta diferencia se explica por el efecto Miller, que multiplica la capacitancia base-colector por el factor de ganancia, aumentando la capacitancia de entrada efectiva y reduciendo la ganancia a frecuencias elevadas. De igual forma, las capacitancias parásitas del montaje contribuyen a una ligera desviación de los valores esperados.
+
+La frecuencia de corte superior teórica fue $f_{cu} = 166{,}1~\text{kHz}$, mientras que experimentalmente se obtuvo $f_{cu} = 135~\text{kHz}$, diferencia atribuible a los efectos no ideales del transistor y al método de medición. La tendencia observada confirma que el amplificador se comporta como un filtro pasa-bajas en la región de alta frecuencia, donde la ganancia decrece de forma predecible al aumentar la frecuencia.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Conclusiones}
+A partir del desarrollo del experimento se logró comprender de forma práctica el funcionamiento de un amplificador con configuración en emisor común, así como la influencia de las capacitancias internas del transistor en el comportamiento en alta frecuencia. Los resultados demostraron que el circuito mantiene una adecuada polarización en corriente directa, asegurando un punto de operación estable dentro de la región activa del transistor. En baja frecuencia, la ganancia medida coincidió de forma satisfactoria con la obtenida por simulación y cálculo teórico, verificando la validez del modelo de pequeña señal empleado.
+
+Por otra parte, al incorporar los capacitores equivalentes a las capacitancias internas del transistor, se observó una disminución en la ganancia y un desplazamiento de la frecuencia de corte hacia valores menores, evidenciando las limitaciones del dispositivo ante señales de alta frecuencia. Esta comparación permitió visualizar el comportamiento real del amplificador cuando las condiciones de operación se acercan a su límite superior de banda.
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\section{}
+%\nocite{*}
+%\printbibliography
+
+\begin{thebibliography}{9}
+
+\bibitem{Floyd2008}
+Floyd Thomas L.,
+\textit{Dispositivos Electrónicos},
+Pearson Prentice Hall, 8ª ed., 2008.
+
+\bibitem{Boylestad}
+Boylestad, R.; Naschelsky, L.,
+\textit{Electrónica: Teoría de Circuitos y dispositivos electrónicos},
+Pearson, 10ª ed., 2009.
+
+\end{thebibliography}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{IEEEbiography}[{\includegraphics[width=1.05in,height=1.3in,clip,keepaspectratio]{jdqh1}}]{Julio David Quesada-Hernández}
+
+Nació en Turrialba, Cartago, Costa Rica, en el 2005, pero desde muy pequeño ha vivido en la provincia de Limón, más específicamente en Siquirres. Recibió su título de bachillerato en el 2022 graduándose del Colegio Experimental Bilingüe de Siquirres, al año siguiente empezó sus estudios en el Instituto Tecnológico de Costa Rica sede central, propiamente en Ingeniería Electrónica.
+Hoy en día está entre su quinto y sexto semestre de carrera.
+Correo: ju.quesada@estudiantec.cr
+
+\end{IEEEbiography}
+
+
+\begin{IEEEbiography}[{\includegraphics[width=1.05in,height=1.3in,clip,keepaspectratio]{ract1}}]{Ramses Alonso Cortes-Torres}
+
+Estudiante de Ingeniería en Electrónica en el Instituto Tecnológico de Costa Rica, graduado de técnico medio en Electrónica Industrial del Colegio Técnico Profesional de Dulce Nombre. Cuenta con experiencia en el análisis y reparación de cajeros automáticos, computadoras y módulos electrónicos de vehículos, además de participar en proyectos relacionados a la autotrónica.
+Correo: racortes@estudiantec.cr
+
+\end{IEEEbiography}
+
+
+
+\vfill
+
+\end{document}
+
+
+
+
+
+
